@@ -1,0 +1,54 @@
+{{ include "synchat.validateImageTag" (dict "environment" .Values.environment "component" "crawler.image.tag" "tag" .Values.crawler.image.tag) }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.crawler.name }}
+  labels:
+    app: {{ .Values.crawler.name }}
+    {{- include "synchat.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.crawler.replicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: {{ .Values.crawler.rollingUpdate.maxUnavailable }}
+      maxSurge: {{ .Values.crawler.rollingUpdate.maxSurge }}
+  selector:
+    matchLabels:
+      app: {{ .Values.crawler.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.crawler.name }}
+        {{- include "synchat.labels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Values.crawler.name }}
+          image: "{{ .Values.crawler.image.repository }}:{{ .Values.crawler.image.tag }}"
+          imagePullPolicy: {{ .Values.crawler.image.pullPolicy }}
+          {{- if .Values.crawler.probes.enabled }}
+          startupProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: {{ .Values.crawler.probes.startup.periodSeconds }}
+            failureThreshold: {{ .Values.crawler.probes.startup.failureThreshold }}
+          livenessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: {{ .Values.crawler.probes.liveness.periodSeconds }}
+            failureThreshold: {{ .Values.crawler.probes.liveness.failureThreshold }}
+          readinessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: {{ .Values.crawler.probes.readiness.periodSeconds }}
+            failureThreshold: {{ .Values.crawler.probes.readiness.failureThreshold }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.crawler.resources | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.crawler.containerPort }}
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.crawler.configMapName }}

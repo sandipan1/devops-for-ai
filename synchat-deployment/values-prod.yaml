@@ -1,0 +1,8 @@
+web:
+  replicas: 3
+
+api:
+  replicas: 3
+
+crawler:
+  replicas: 2

@@ -1,0 +1,5 @@
+apiVersion: v2
+name: platform-gateway
+description: Cluster-level Gateway API resources
+type: application
+version: 0.1.0

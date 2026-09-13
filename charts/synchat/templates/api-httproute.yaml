@@ -1,0 +1,22 @@
+{{- if and .Values.gateway.enabled .Values.apiRoute.enabled }}
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ .Values.apiRoute.name }}
+  labels:
+    {{- include "synchat.labels" . | nindent 4 }}
+spec:
+  parentRefs:
+    - name: {{ .Values.gateway.name }}
+      sectionName: {{ .Values.gateway.listener.name }}
+  hostnames:
+    {{- toYaml .Values.apiRoute.hostnames | nindent 4 }}
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: {{ .Values.apiRoute.path }}
+      backendRefs:
+        - name: {{ .Values.apiRoute.serviceName }}
+          port: {{ .Values.apiRoute.servicePort }}
+{{- end }}

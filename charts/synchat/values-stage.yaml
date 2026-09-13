@@ -1,0 +1,14 @@
+# Staging overrides. Shared defaults remain in values.yaml.
+environment: stage
+
+web:
+  replicas: 2
+
+api:
+  replicas: 2
+
+crawler:
+  replicas: 1
+
+secrets:
+  enabled: false

@@ -1,0 +1,6 @@
+gatewayClass:
+  name: app-gatewayclass
+  controllerName: gateway.envoyproxy.io/gatewayclass-controller
+
+envoyProxy:
+  name: app-envoy-proxy

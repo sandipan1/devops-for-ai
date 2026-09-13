@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.crawler.serviceName }}
+  labels:
+    app: {{ .Values.crawler.name }}
+    {{- include "synchat.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  selector:
+    app: {{ .Values.crawler.name }}
+  ports:
+    - name: http
+      protocol: TCP
+      port: {{ .Values.crawler.servicePort }}
+      targetPort: http

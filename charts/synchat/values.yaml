@@ -1,0 +1,166 @@
+nameOverride: ""
+fullnameOverride: ""
+environment: dev
+
+web:
+  name: synergychat-web
+  replicas: 3
+  rollingUpdate:
+    maxUnavailable: 0
+    maxSurge: 1
+  podDisruptionBudget:
+    enabled: false
+    maxUnavailable: 1
+  image:
+    repository: docker.io/bootdotdev/synergychat-web
+    tag: latest
+    pullPolicy: Always
+  containerPort: 8080
+  probes:
+    enabled: true
+    startup:
+      periodSeconds: 5
+      failureThreshold: 30
+    liveness:
+      periodSeconds: 10
+      failureThreshold: 3
+    readiness:
+      periodSeconds: 5
+      failureThreshold: 3
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+  serviceName: web-service
+  servicePort: 80
+  configMapName: synergychat-web-configmap
+  config:
+    webPort: "8080"
+    # This URL is used by the browser. It must match apiRoute.hostnames.
+    apiUrl: http://synchatapi.internal
+
+api:
+  name: synergychat-api
+  serviceAccountName: synchat-api
+  replicas: 1
+  rollingUpdate:
+    maxUnavailable: 0
+    maxSurge: 1
+  podDisruptionBudget:
+    enabled: false
+    maxUnavailable: 1
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 4
+    targetCPUUtilizationPercentage: 70
+  image:
+    repository: docker.io/bootdotdev/synergychat-api
+    tag: latest
+    pullPolicy: Always
+  containerPort: 8080
+  probes:
+    enabled: true
+    startup:
+      periodSeconds: 5
+      failureThreshold: 30
+    liveness:
+      periodSeconds: 10
+      failureThreshold: 3
+    readiness:
+      periodSeconds: 5
+      failureThreshold: 3
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+  serviceName: api-service
+  servicePort: 80
+  configMapName: synergychat-api-configmap
+  config:
+    apiPort: "8080"
+    dbFilepath: /var/lib/synergychat/api/db.json
+    # API and crawler are in the same namespace in this release.
+    crawlerBaseUrl: http://crawler-service
+
+secrets:
+  enabled: false
+  provider: aws
+  secretProviderClassName: synchat-api-database
+  objectName: synchat/prod/api/database
+  mountPath: /mnt/secrets
+
+crawler:
+  name: synergychat-crawler
+  replicas: 1
+  rollingUpdate:
+    maxUnavailable: 0
+    maxSurge: 1
+  image:
+    repository: docker.io/bootdotdev/synergychat-crawler
+    tag: latest
+    pullPolicy: Always
+  containerPort: 8080
+  probes:
+    enabled: true
+    startup:
+      periodSeconds: 5
+      failureThreshold: 30
+    liveness:
+      periodSeconds: 10
+      failureThreshold: 3
+    readiness:
+      periodSeconds: 5
+      failureThreshold: 3
+  
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+  serviceName: crawler-service
+  servicePort: 80
+  configMapName: synergychat-crawler-configmap
+  config:
+    crawlerPort: "8080"
+    crawlerKeywords: love,hate,joy,sadness,anger,disgust,fear,surprise
+
+gateway:
+  enabled: true
+  name: synchat-gateway
+  className: app-gatewayclass
+  listener:
+    name: http
+    protocol: HTTP
+    port: 80
+
+httpRoute:
+  enabled: true
+  name: web-httproute
+  hostnames:
+    - synchat.internal
+  path: /
+  serviceName: web-service
+  servicePort: 80
+
+apiRoute:
+  enabled: true
+  name: api-httproute
+  hostnames:
+    - synchatapi.internal
+  path: /
+  serviceName: api-service
+  servicePort: 80
+
+networkPolicy:
+  enabled: false
+  apiPort: 8080
+  crawlerPort: 8080

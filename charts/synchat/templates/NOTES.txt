@@ -1,0 +1,14 @@
+Synchat was installed in namespace {{ .Release.Namespace }}.
+
+Application resources:
+  kubectl get deployment,service,configmap,pods -n {{ .Release.Namespace }}
+
+Gateway resources:
+  kubectl get gateway,httproute -n {{ .Release.Namespace }}
+
+Routes:
+  web: http://synchat.internal -> {{ .Values.web.serviceName }}:{{ .Values.web.servicePort }}
+  api: http://synchatapi.internal -> {{ .Values.api.serviceName }}:{{ .Values.api.servicePort }}
+
+The API reaches the crawler through the internal Service:
+  {{ .Values.api.config.crawlerBaseUrl }}

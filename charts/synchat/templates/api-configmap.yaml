@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.api.configMapName }}
+  labels:
+    app: {{ .Values.api.name }}
+    {{- include "synchat.labels" . | nindent 4 }}
+data:
+  API_PORT: {{ .Values.api.config.apiPort | quote }}
+  API_DB_FILEPATH: {{ .Values.api.config.dbFilepath | quote }}
+  CRAWLER_BASE_URL: {{ .Values.api.config.crawlerBaseUrl | quote }}

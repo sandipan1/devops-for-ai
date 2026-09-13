@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.crawler.configMapName }}
+  labels:
+    app: {{ .Values.crawler.name }}
+    {{- include "synchat.labels" . | nindent 4 }}
+data:
+  CRAWLER_PORT: {{ .Values.crawler.config.crawlerPort | quote }}
+  CRAWLER_KEYWORDS: {{ .Values.crawler.config.crawlerKeywords | quote }}

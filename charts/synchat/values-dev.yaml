@@ -1,0 +1,14 @@
+# Development overrides. Shared defaults remain in values.yaml.
+environment: dev
+
+web:
+  replicas: 2
+
+api:
+  replicas: 1
+
+crawler:
+  replicas: 1
+
+secrets:
+  enabled: false
