@@ -1,0 +1,47 @@
+name: Validate Synchat Helm chart
+
+on:
+  pull_request:
+    paths:
+      - "terraform-practice/charts/synchat/**"
+      - ".github/workflows/helm-validate.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "terraform-practice/charts/synchat/**"
+      - ".github/workflows/helm-validate.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  helm:
+    name: Lint and render Helm chart
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Lint chart
+        run: helm lint terraform-practice/charts/synchat
+
+      - name: Render development, staging, and production
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+
+          for environment in dev stage prod; do
+            helm template synchat terraform-practice/charts/synchat \
+              --namespace "synchat-${environment}" \
+              --values "terraform-practice/charts/synchat/values-${environment}.yaml" \
+              --set "web.image.tag=${IMAGE_TAG}" \
+              --set "api.image.tag=${IMAGE_TAG}" \
+              --set "crawler.image.tag=${IMAGE_TAG}" \
+              > "/tmp/synchat-${environment}.yaml"
+          done
