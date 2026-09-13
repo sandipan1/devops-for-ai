@@ -4,3 +4,5 @@
 *.tfvars
 *.tfplan
 !terraform.tfvars.example
+PRODUCTION-LEARNING-NOTES.md
+PRODUCTION-LEARNING-ROADMAP.md
