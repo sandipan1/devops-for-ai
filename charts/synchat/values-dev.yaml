@@ -2,7 +2,7 @@
 environment: dev
 
 web:
-  replicas: 2
+  replicas: 3
   image:
     tag: fd804d5073868bbf7f2e41172d82eab9b400d2a4
 
