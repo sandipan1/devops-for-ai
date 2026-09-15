@@ -4,17 +4,17 @@ environment: dev
 web:
   replicas: 2
   image:
-    tag: 18a86a9f4416694520dc9b3ab18a67f196611670
+    tag: fd804d5073868bbf7f2e41172d82eab9b400d2a4
 
 api:
   replicas: 1
   image:
-    tag: 18a86a9f4416694520dc9b3ab18a67f196611670
+    tag: fd804d5073868bbf7f2e41172d82eab9b400d2a4
 
 crawler:
   replicas: 1
   image:
-    tag: 18a86a9f4416694520dc9b3ab18a67f196611670
+    tag: fd804d5073868bbf7f2e41172d82eab9b400d2a4
 
 secrets:
   enabled: false

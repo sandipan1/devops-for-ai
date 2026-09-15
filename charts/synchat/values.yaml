@@ -13,7 +13,7 @@ web:
     maxUnavailable: 1
   image:
     repository: ghcr.io/sandipan1/synergychat-web
-    tag: 18a86a9f4416694520dc9b3ab18a67f196611670
+    tag: fd804d5073868bbf7f2e41172d82eab9b400d2a4
     pullPolicy: Always
   containerPort: 8080
   probes:
@@ -59,7 +59,7 @@ api:
     targetCPUUtilizationPercentage: 70
   image:
     repository: ghcr.io/sandipan1/synergychat-api
-    tag: 18a86a9f4416694520dc9b3ab18a67f196611670
+    tag: fd804d5073868bbf7f2e41172d82eab9b400d2a4
     pullPolicy: Always
   containerPort: 8080
   probes:
@@ -104,7 +104,7 @@ crawler:
     maxSurge: 1
   image:
     repository: ghcr.io/sandipan1/synergychat-crawler
-    tag: 18a86a9f4416694520dc9b3ab18a67f196611670
+    tag: fd804d5073868bbf7f2e41172d82eab9b400d2a4
     pullPolicy: Always
   containerPort: 8080
   probes:
