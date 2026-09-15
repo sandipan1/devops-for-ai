@@ -3,6 +3,8 @@ environment: prod
 
 web:
   replicas: 3
+  image:
+    tag: 18a86a9f4416694520dc9b3ab18a67f196611670
   podDisruptionBudget:
     enabled: true
     maxUnavailable: 1
@@ -16,6 +18,8 @@ web:
 
 api:
   replicas: 2
+  image:
+    tag: 18a86a9f4416694520dc9b3ab18a67f196611670
   podDisruptionBudget:
     enabled: true
     maxUnavailable: 1
@@ -34,6 +38,8 @@ api:
 
 crawler:
   replicas: 2
+  image:
+    tag: 18a86a9f4416694520dc9b3ab18a67f196611670
   resources:
     requests:
       cpu: 200m

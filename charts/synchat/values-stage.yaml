@@ -3,12 +3,18 @@ environment: stage
 
 web:
   replicas: 2
+  image:
+    tag: 18a86a9f4416694520dc9b3ab18a67f196611670
 
 api:
   replicas: 2
+  image:
+    tag: 18a86a9f4416694520dc9b3ab18a67f196611670
 
 crawler:
   replicas: 1
+  image:
+    tag: 18a86a9f4416694520dc9b3ab18a67f196611670
 
 secrets:
   enabled: false

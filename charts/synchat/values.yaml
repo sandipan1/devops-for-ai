@@ -12,8 +12,8 @@ web:
     enabled: false
     maxUnavailable: 1
   image:
-    repository: docker.io/bootdotdev/synergychat-web
-    tag: latest
+    repository: ghcr.io/sandipan1/synergychat-web
+    tag: 18a86a9f4416694520dc9b3ab18a67f196611670
     pullPolicy: Always
   containerPort: 8080
   probes:
@@ -58,8 +58,8 @@ api:
     maxReplicas: 4
     targetCPUUtilizationPercentage: 70
   image:
-    repository: docker.io/bootdotdev/synergychat-api
-    tag: latest
+    repository: ghcr.io/sandipan1/synergychat-api
+    tag: 18a86a9f4416694520dc9b3ab18a67f196611670
     pullPolicy: Always
   containerPort: 8080
   probes:
@@ -103,8 +103,8 @@ crawler:
     maxUnavailable: 0
     maxSurge: 1
   image:
-    repository: docker.io/bootdotdev/synergychat-crawler
-    tag: latest
+    repository: ghcr.io/sandipan1/synergychat-crawler
+    tag: 18a86a9f4416694520dc9b3ab18a67f196611670
     pullPolicy: Always
   containerPort: 8080
   probes:
