@@ -18,3 +18,7 @@ crawler:
 
 secrets:
   enabled: false
+
+monitoring: 
+  serviceMonitor:
+    enabled: true 
