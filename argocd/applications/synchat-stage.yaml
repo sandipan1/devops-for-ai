@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: synchat-stage
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/sandipan1/devops-for-ai.git
+    targetRevision: main
+    path: charts/synchat
+    helm:
+      valueFiles:
+        - values-stage.yaml
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: synchat-stage
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
