@@ -24,6 +24,3 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-  monitoring: 
-    serviceMonitor:
-      enabled: true 
